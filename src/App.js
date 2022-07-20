@@ -1,23 +1,34 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getImage, postImage } from "./axioshelper";
 
 function App() {
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState();
+  const [files, setfiles] = useState();
+  const [result, setResult] = useState([]);
   const [images, setImages] = useState([]);
-  const [result, setResult] = useState();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/image-upload")
-      .then((res) => setResult(res))
+    axios({
+      url: "http://localhost:8000/image-upload",
+      method: "GET",
+    })
+      .then((res) => setResult(res.data.data))
       .catch((err) => console.log(err));
-    console.log(result.data.data);
   }, []);
+  useEffect(() => {
+    !result.length && fetchData();
+  }, []);
+  const fetchData = async () => {
+    const { data } = await getImage();
+    setResult(data);
+  };
+  console.log(result);
 
   const handleOnImageSelect = (e) => {
-    const { files } = e.target;
-    setImages(files);
+    const files = e.target.files;
+    setfiles(files);
   };
   const handleOnChange = (e) => {
     let { name, value } = e.target;
@@ -27,17 +38,22 @@ function App() {
     });
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    for (let key in form) {
-      formData.append(key, form[key]);
+
+    let formData = new FormData();
+    formData.append("images", files);
+    formData.append("label", form.label);
+
+    await postImage(formData);
+
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
     }
-    console.log(formData);
   };
 
   return (
-    <div className="App">
+    <div className="app">
       <div className="uploadSection">
         <h1>Upload Pictures with label.</h1>
         <form onSubmit={handleOnSubmit} encType="multipart/form-data">
@@ -65,32 +81,55 @@ function App() {
           <h1>Images</h1>
         </div>
         <hr />
-        <div className="preview_card">
-          <div className="card-title">
-            <p className="our-photography">Your Photography</p>
-            <p className="label">Cities</p>
-          </div>
-          <div className="card-body">
-            <div className="image-container">
-              <img
-                src="https://images.freeimages.com/images/small-previews/e4e/circulate-abstract-1562332.jpg"
-                alt=""
-              />
+        {result.map((item, i) => {
+          return (
+            <div className="preview_card">
+              <div className="card-title">
+                <h1>Your Photography</h1>
+                <p className="label">{item.label}</p>
+              </div>
+              <div className="card-body">
+                {item.images.length > 1 ? (
+                  <div className="image-container">
+                    <img
+                      width="100%"
+                      src={"http://localhost:8000/" + item.images[1].substr(6)}
+                      alt=""
+                    />
+                    <img
+                      width="100%"
+                      src={"http://localhost:8000/" + item.images[2].substr(6)}
+                      alt=""
+                    />
+                    <img
+                      width="100%"
+                      src={"http://localhost:8000/" + item.images[0].substr(6)}
+                      alt=""
+                    />
+                    <img
+                      width="100%"
+                      src={"http://localhost:8000/" + item.images[0].substr(6)}
+                      alt=""
+                    />
+                    <img
+                      width="100%"
+                      src={"http://localhost:8000/" + item.images[0].substr(6)}
+                      alt=""
+                    />
+                  </div>
+                ) : (
+                  <div className="image-container">
+                    <img
+                      width="100%"
+                      src={"http://localhost:8000/" + item.images[0].substr(6)}
+                      alt=""
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="image-container">
-              <img
-                src="https://images.freeimages.com/images/small-previews/e4e/circulate-abstract-1562332.jpg"
-                alt=""
-              />
-            </div>
-            <div className="image-container">
-              <img
-                src="https://images.freeimages.com/images/small-previews/e4e/circulate-abstract-1562332.jpg"
-                alt=""
-              />
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );
