@@ -1,18 +1,61 @@
 import "./App.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
+  const [form, setForm] = useState({});
+  const [images, setImages] = useState([]);
+  const [result, setResult] = useState();
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/image-upload")
+      .then((res) => setResult(res))
+      .catch((err) => console.log(err));
+    console.log(result.data.data);
+  }, []);
+
+  const handleOnImageSelect = (e) => {
+    const { files } = e.target;
+    setImages(files);
+  };
+  const handleOnChange = (e) => {
+    let { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    for (let key in form) {
+      formData.append(key, form[key]);
+    }
+    console.log(formData);
+  };
+
   return (
     <div className="App">
       <div className="uploadSection">
         <h1>Upload Pictures with label.</h1>
-        <form>
+        <form onSubmit={handleOnSubmit} encType="multipart/form-data">
           <input
             type="text"
             className="label"
             placeholder="Album Name"
-            name="albumName"
+            name="label"
+            onChange={handleOnChange}
           />
-          <input className="file-input" type="file" name="images" />
+          <input
+            className="file-input"
+            type="file"
+            multiple={true}
+            accept="image/*"
+            name="images"
+            onChange={handleOnImageSelect}
+          />
 
           <button type="submit">Upload</button>
         </form>
