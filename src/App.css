@@ -1,38 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&family=Edu+VIC+WA+NT+Beginner:wght@400;600&family=Inter:wght@200;300;500;700&family=Manrope:wght@500;700&family=Poppins:ital,wght@0,200;0,400;0,600;1,400&family=Raleway:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&family=Edu+VIC+WA+NT+Beginner:wght@400;600&family=Inter:wght@200;300;500;700&family=Manrope:wght@500;700&family=Montserrat:wght@200&family=Poppins:ital,wght@0,200;0,400;0,600;1,400&family=Raleway:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&family=Cedarville+Cursive&family=Edu+VIC+WA+NT+Beginner:wght@400;600&family=Inter:wght@200;300;500;700&family=Manrope:wght@500;700&family=Montserrat:wght@200&family=Poppins:ital,wght@0,200;0,400;0,600;1,400&family=Raleway:wght@400;700&display=swap");
+body {
+  background-color: antiquewhite;
+}
 .App {
+  width: 90%;
+  margin: auto;
+  font-family: "Edu VIC WA NT Beginner", cursive;
+}
+
+.uploadSection {
+  background: #a09984;
   text-align: center;
+  font-weight: 500;
+  color: #472f21;
+  padding-top: 1em;
+  padding-bottom: 2em;
+  border-radius: 15px;
+  margin-top: 5px;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.uploadSection > form {
+  display: flex;
+  margin: auto;
+  width: 80%;
+  justify-content: space-between;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.uploadSection > form > input {
+  font-size: 1em;
+  font-family: "Edu VIC WA NT Beginner", cursive;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 3px 5px 15px 4px rgba(212, 212, 212, 0.39);
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+button {
+  border: #472f21;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.previewSection {
+  margin-top: 15px;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 0.5em;
+}
+.preview_card {
+  position: relative;
+  gap: 1em;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid red;
+  border-radius: 5%;
+}
+.card-body {
+  display: flex;
+  justify-content: space-around;
+  gap: 1em;
+  padding: 1em;
+}
+.image-container {
+  border-radius: 50px;
+  overflow: hidden;
 }
 
-.App-link {
-  color: #61dafb;
+.label {
+  font-family: "Cedarville Cursive", cursive;
+  color: #9f4817;
+}
+.our-photography {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@media screen and (max-width: 768px) {
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
   }
-  to {
-    transform: rotate(360deg);
+
+  .label {
+    font-size: 2em;
+  }
+
+  form > button {
+    width: 25%;
+    margin-top: 1em;
+    font-size: 1.5em;
+    color: #472f21;
+  }
+  .card-body {
+    flex-direction: column;
   }
 }
